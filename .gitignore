@@ -2,7 +2,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,osx
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,osx
 
-poetry.lock
+pgdata/
 
 ### OSX ###
 # General
