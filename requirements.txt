@@ -1,4 +1,3 @@
 fastapi
-gunicorn
-sqlalchemy[postgresql_psycopg2binary,postgresql_asyncpg]
+sqlalchemy[postgresql_asyncpg]
 uvicorn[standard]

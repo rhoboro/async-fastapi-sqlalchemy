@@ -1,19 +1,18 @@
 FastAPI+SQLAlchemy Async Sample
 
+# Setup
+
+## Install
+
 ```shell
 $ python3 -m venv venv
 $ . venv/bin/activate
 (venv) $ pip install -r requirements.lock
-(venv) $ docker run -d --name db \
-  -e POSTGRES_PASSWORD=password \
-  -e PGDATA=/var/lib/postgresql/data/pgdata \
-  -v $(pwd)/pgdata:/var/lib/postgresql/data \
-  -p 5432:5432 \
-  postgres:13.3
-(venv) $ APP_CONFIG_FILE=local gunicorn -k uvicorn.workers.UvicornWorker -c gunicorn.conf.py app.main:app
 ```
 
-```shell
+## Setup a databaase and create tables
+
+```
 (venv) $ docker run -d --name db \
   -e POSTGRES_PASSWORD=password \
   -e PGDATA=/var/lib/postgresql/data/pgdata \
@@ -29,3 +28,12 @@ $ . venv/bin/activate
 ...   await conn.run_sync(Base.metadata.create_all)
 >>>
 ```
+
+# Run
+
+```shell
+(venv) $ APP_CONFIG_FILE=local uvicorn app.main:app --reload-dir app
+```
+
+You can now access [localhost:8000/docs](http://localhost:8000/docs) to see the API documentation.
+
