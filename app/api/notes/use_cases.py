@@ -1,6 +1,6 @@
 from typing import AsyncIterator
 
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from sqlalchemy.orm import sessionmaker
 
 from app.db import get_session
@@ -15,7 +15,7 @@ class CreateNote:
         async with self.async_session.begin() as session:
             notebook = await Notebook.read_by_id(session, notebook_id)
             if not notebook:
-                raise ValueError()
+                raise HTTPException(status_code=404)
             note = await Note.create(session, notebook.id, title, content)
             return NoteSchema.from_orm(note)
 
@@ -38,7 +38,7 @@ class ReadNote:
         async with self.async_session() as session:
             note = await Note.read_by_id(session, note_id)
             if not note:
-                raise ValueError()
+                raise HTTPException(status_code=404)
             return NoteSchema.from_orm(note)
 
 
@@ -50,12 +50,12 @@ class UpdateNote:
         async with self.async_session.begin() as session:
             note = await Note.read_by_id(session, note_id)
             if not note:
-                raise ValueError()
+                raise HTTPException(status_code=404)
 
             if note.notebook_id != notebook_id:
                 notebook = await Notebook.read_by_id(session, notebook_id)
                 if not notebook:
-                    raise ValueError()
+                    raise HTTPException(status_code=404)
                 notebook_id_ = notebook.id
             else:
                 notebook_id_ = note.notebook_id

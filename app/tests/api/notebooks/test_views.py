@@ -168,7 +168,7 @@ async def test_notebooks_update(ac: AsyncClient, session: AsyncSession) -> None:
 @pytest.mark.asyncio
 async def test_notebooks_delete(ac: AsyncClient, session: AsyncSession) -> None:
     """Delete a notebook"""
-    from app.models import Notebook, Note
+    from app.models import Note, Notebook
 
     # setup
     await setup_data(session)
