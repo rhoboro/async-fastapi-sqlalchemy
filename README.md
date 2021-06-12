@@ -37,3 +37,13 @@ $ . venv/bin/activate
 
 You can now access [localhost:8000/docs](http://localhost:8000/docs) to see the API documentation.
 
+
+# Test
+
+```shell
+(venv) $ pip install -r requirements_test.txt
+(venv) $ black app
+(venv) $ isort app
+(venv) $ mypy app
+(venv) $ pytest app
+```

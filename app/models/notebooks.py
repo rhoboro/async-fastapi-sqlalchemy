@@ -30,7 +30,7 @@ class Notebook(Base):
         stmt = select(cls)
         if include_notes:
             stmt = stmt.options(selectinload(cls.notes))
-        stream = await session.stream(stmt)
+        stream = await session.stream(stmt.order_by(cls.id))
         async for row in stream:
             yield row.Notebook
 
@@ -41,7 +41,7 @@ class Notebook(Base):
         stmt = select(cls).where(cls.id == notebook_id)
         if include_notes:
             stmt = stmt.options(selectinload(cls.notes))
-        result = (await session.execute(stmt)).first()
+        result = (await session.execute(stmt.order_by(cls.id))).first()
         if result:
             return result.Notebook
         else:

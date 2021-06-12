@@ -1,0 +1,14 @@
+black
+eqassertions
+httpx
+isort
+mypy
+psycopg2-binary
+pytest
+pytest-asyncio
+pytest-cov
+pytest-env
+pytest-flake8
+pytest-mock
+pytest-randomly
+
