@@ -5,7 +5,6 @@ from app.models import NotebookSchema
 from .schema import (
     CreateNotebookRequest,
     CreateNotebookResponse,
-    NotebookSchema,
     ReadAllNotebookResponse,
     ReadNotebookResponse,
     UpdateNotebookRequest,

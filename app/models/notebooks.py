@@ -81,6 +81,6 @@ class NotebookSchema(BaseModel):
         orm_mode = True
 
 
-from .notes import Note, NoteSchema
+from .notes import Note, NoteSchema  # noqa: E402
 
 NotebookSchema.update_forward_refs()
