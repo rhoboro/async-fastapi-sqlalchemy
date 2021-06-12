@@ -25,10 +25,10 @@ async def setup_data(session: AsyncSession):
 @pytest.mark.asyncio
 async def test_notes_read_all(ac: AsyncClient, session: AsyncSession) -> None:
     """Read all notes"""
-    # テストデータ投入
+    # setup
     await setup_data(session)
 
-    # 処理の実行
+    # execute
     response = await ac.get(
         "/api/notes",
     )
@@ -66,14 +66,14 @@ async def test_notes_read_all(ac: AsyncClient, session: AsyncSession) -> None:
 @pytest.mark.asyncio
 async def test_notes_read(ac: AsyncClient, session: AsyncSession) -> None:
     """Read a note"""
-    # テストデータ投入
     from app.models import Notebook
 
+    # setup
     await setup_data(session)
     notebook = [nb async for nb in Notebook.read_all(session, include_notes=True)][0]
     note = notebook.notes[0]
 
-    # 処理の実行
+    # execute
     response = await ac.get(
         f"/api/notes/{note.id}",
     )
@@ -95,12 +95,12 @@ async def test_notes_create(ac: AsyncClient, session: AsyncSession) -> None:
     """Create a note"""
     from app.models import Notebook
 
-    # テストデータ投入
+    # setup
     await setup_data(session)
     notebook = [nb async for nb in Notebook.read_all(session, include_notes=True)][0]
     notes_count = len(notebook.notes)
 
-    # 処理の実行
+    # execute
     response = await ac.post(
         "/api/notes",
         json={"title": "Test Note", "content": "Test Content", "notebook_id": notebook.id},
@@ -126,14 +126,14 @@ async def test_notes_update(ac: AsyncClient, session: AsyncSession) -> None:
     """Update a note"""
     from app.models import Notebook
 
-    # テストデータ投入
+    # setup
     await setup_data(session)
     notebook = [nb async for nb in Notebook.read_all(session, include_notes=True)][0]
     note = notebook.notes[0]
     assert "Note 1" == note.title
     assert "Content 1" == note.content
 
-    # 処理の実行
+    # execute
     response = await ac.put(
         f"/api/notes/{note.id}",
         json={
@@ -164,13 +164,13 @@ async def test_notes_delete(ac: AsyncClient, session: AsyncSession) -> None:
     """Delete a note"""
     from app.models import Notebook
 
-    # テストデータ投入
+    # setup
     await setup_data(session)
     notebook = [nb async for nb in Notebook.read_all(session, include_notes=True)][0]
     notes_count = len(notebook.notes)
     note = notebook.notes[0]
 
-    # 処理の実行
+    # execute
     response = await ac.delete(
         f"/api/notes/{note.id}",
     )

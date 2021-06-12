@@ -6,8 +6,8 @@ from app.models import NoteSchema
 
 
 class CreateNoteRequest(BaseModel):
-    title: str = Field(..., min_length=1, max_length=64, description="")
-    content: str = Field("", min_length=0, max_length=500, description="")
+    title: str = Field(..., min_length=1, max_length=64)
+    content: str = Field("", min_length=0, max_length=500)
     notebook_id: int
 
 
@@ -24,8 +24,8 @@ class ReadAllNoteResponse(BaseModel):
 
 
 class UpdateNoteRequest(BaseModel):
-    title: str = Field(..., min_length=1, max_length=64, description="")
-    content: str = Field(..., min_length=0, max_length=500, description="")
+    title: str = Field(..., min_length=1, max_length=64)
+    content: str = Field(..., min_length=0, max_length=500)
     notebook_id: int
 
 

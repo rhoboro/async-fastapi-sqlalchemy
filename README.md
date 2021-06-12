@@ -1,4 +1,7 @@
-FastAPI+SQLAlchemy Async Sample
+# Async Web API with FastAPI + SQLAlchemy 2.0 Style
+
+This is a sample project of Async Web API with FastAPI + SQLAlchemy 2.0 Style.
+It includes asynchronous DB access using asyncpg and test code covering them.
 
 # Setup
 
@@ -10,9 +13,9 @@ $ . venv/bin/activate
 (venv) $ pip install -r requirements.lock
 ```
 
-## Setup a databaase and create tables
+## Setup a database and create tables
 
-```
+```shell
 (venv) $ docker run -d --name db \
   -e POSTGRES_PASSWORD=password \
   -e PGDATA=/var/lib/postgresql/data/pgdata \

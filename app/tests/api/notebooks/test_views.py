@@ -25,10 +25,10 @@ async def setup_data(session: AsyncSession):
 @pytest.mark.asyncio
 async def test_notebooks_read_all(ac: AsyncClient, session: AsyncSession) -> None:
     """Read all notebooks"""
-    # テストデータ投入
+    # setup
     await setup_data(session)
 
-    # 処理の実行
+    # execute
     response = await ac.get(
         "/api/notebooks",
     )
@@ -78,13 +78,13 @@ async def test_notebooks_read_all(ac: AsyncClient, session: AsyncSession) -> Non
 @pytest.mark.asyncio
 async def test_notebooks_read(ac: AsyncClient, session: AsyncSession) -> None:
     """Read a notebook"""
-    # テストデータ投入
     from app.models import Notebook
 
+    # setup
     await setup_data(session)
     notebook = [nb async for nb in Notebook.read_all(session, include_notes=True)][0]
 
-    # 処理の実行
+    # execute
     response = await ac.get(
         f"/api/notebooks/{notebook.id}",
     )
@@ -117,7 +117,7 @@ async def test_notebooks_read(ac: AsyncClient, session: AsyncSession) -> None:
 @pytest.mark.asyncio
 async def test_notebooks_create(ac: AsyncClient, session: AsyncSession) -> None:
     """Create a notebook"""
-    # 処理の実行
+    # execute
     response = await ac.post("/api/notebooks", json={"title": "Test Notebook", "notes": []})
 
     print(response.content)
@@ -131,14 +131,14 @@ async def test_notebooks_update(ac: AsyncClient, session: AsyncSession) -> None:
     """Update a notebook"""
     from app.models import Notebook
 
-    # テストデータ投入
+    # setup
     await setup_data(session)
     notebook = [nb async for nb in Notebook.read_all(session, include_notes=True)][0]
     assert "Notebook 1" == notebook.title
     assert 2 == len(notebook.notes)
     note = notebook.notes[0]
 
-    # 処理の実行
+    # execute
     response = await ac.put(
         f"/api/notebooks/{notebook.id}", json={"title": "Test Notebook", "notes": [note.id]}
     )
@@ -168,14 +168,16 @@ async def test_notebooks_update(ac: AsyncClient, session: AsyncSession) -> None:
 @pytest.mark.asyncio
 async def test_notebooks_delete(ac: AsyncClient, session: AsyncSession) -> None:
     """Delete a notebook"""
-    from app.models import Notebook
+    from app.models import Notebook, Note
 
-    # テストデータ投入
+    # setup
     await setup_data(session)
     notebooks = [nb async for nb in Notebook.read_all(session, include_notes=True)]
     assert 2 == len(notebooks)
+    notes = [n async for n in Note.read_all(session)]
+    assert 3 == len(notes)
 
-    # 処理の実行
+    # execute
     response = await ac.delete(
         f"/api/notebooks/{notebooks[0].id}",
     )
@@ -185,3 +187,7 @@ async def test_notebooks_delete(ac: AsyncClient, session: AsyncSession) -> None:
 
     notebooks = [nb async for nb in Notebook.read_all(session, include_notes=True)]
     assert 1 == len(notebooks)
+
+    # delete-orphan
+    notes = [n async for n in Note.read_all(session)]
+    assert 1 == len(notes)
