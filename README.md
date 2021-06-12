@@ -3,6 +3,9 @@
 This is a sample project of Async Web API with FastAPI + SQLAlchemy 2.0 Style.
 It includes asynchronous DB access using asyncpg and test code covering them.
 
+This sample project is explained in this blog (written in Japanese).  
+https://www.rhoboro.com/2021/06/12/async-fastapi-sqlalchemy.html
+
 # Setup
 
 ## Install
