@@ -25,14 +25,12 @@ $ . venv/bin/activate
   -v $(pwd)/pgdata:/var/lib/postgresql/data \
   -p 5432:5432 \
   postgres:13.3
-(venv) $ APP_CONFIG_FILE=local python3 -m asyncio
->>> import asyncio
->>> from app.db import async_engine
->>> from app.models.base import Base
->>> async with async_engine.begin() as conn:
-...   await conn.run_sync(Base.metadata.drop_all)
-...   await conn.run_sync(Base.metadata.create_all)
->>>
+
+(venv) $ APP_CONFIG_FILE=local alembic upgrade head
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> a8483365f505, initial_empty
+INFO  [alembic.runtime.migration] Running upgrade a8483365f505 -> 24104b6e1e0c, add_tables
 ```
 
 # Run
