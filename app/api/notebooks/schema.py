@@ -7,6 +7,7 @@ from app.models import NotebookSchema
 
 class CreateNotebookRequest(BaseModel):
     title: str = Field(..., min_length=1, max_length=64)
+    notes: list[int] = Field(min_items=0)
 
 
 class CreateNotebookResponse(NotebookSchema):
