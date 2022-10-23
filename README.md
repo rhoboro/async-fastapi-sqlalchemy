@@ -6,6 +6,8 @@ It includes asynchronous DB access using asyncpg and test code covering them.
 This sample project is explained in this blog (written in Japanese).  
 https://www.rhoboro.com/2021/06/12/async-fastapi-sqlalchemy.html
 
+If you want to use prisma instead of sqlalchemy, see [rhoboro/async-fastapi-prisma](https://github.com/rhoboro/async-fastapi-prisma).
+
 # Setup
 
 ## Install
