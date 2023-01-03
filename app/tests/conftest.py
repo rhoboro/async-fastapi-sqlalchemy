@@ -91,7 +91,7 @@ async def session():
         def test_get_session() -> Generator:
             try:
                 yield AsyncSessionLocal
-            except SQLAlchemyError as e:
+            except SQLAlchemyError:
                 pass
 
         app.dependency_overrides[get_session] = test_get_session
