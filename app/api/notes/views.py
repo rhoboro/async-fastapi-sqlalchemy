@@ -15,7 +15,7 @@ from .use_cases import CreateNote, DeleteNote, ReadAllNote, ReadNote, UpdateNote
 router = APIRouter(prefix="/notes")
 
 
-@router.post("/", response_model=CreateNoteResponse)
+@router.post("", response_model=CreateNoteResponse)
 async def create(
     request: Request,
     data: CreateNoteRequest,
@@ -24,7 +24,7 @@ async def create(
     return await use_case.execute(data.notebook_id, data.title, data.content)
 
 
-@router.get("/", response_model=ReadAllNoteResponse)
+@router.get("", response_model=ReadAllNoteResponse)
 async def read_all(
     request: Request,
     use_case: ReadAllNote = Depends(ReadAllNote),

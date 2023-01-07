@@ -27,3 +27,19 @@ module = [
 ]
 disallow_untyped_calls = false
 ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+disable_test_id_escaping_and_forfeit_all_rights_to_community_support = true
+testpaths = [
+  "app"
+]
+addopts = "-v -rsxX -l --tb=short --strict --cov=app -p no:warnings"
+xfails_strict = true
+markers = [
+  "tmp: Temporary",
+  "optional: Optional",
+]
+env = [
+  "APP_CONFIG_FILE=test"
+]
