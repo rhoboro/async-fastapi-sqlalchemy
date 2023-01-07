@@ -4,3 +4,26 @@ select = ["E", "F", "I"]
 
 [tool.ruff.per-file-ignores]
 "app/models/__init__.py" = ["F401"]
+
+[[tool.mypy.overrides]]
+module = [
+  "app.*"
+]
+ignore_missing_imports = true
+follow_imports = "normal"
+disallow_untyped_defs = true
+disallow_untyped_calls = true
+
+[[tool.mypy.overrides]]
+module = [
+  "app.tests.*"
+]
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = [
+    "sqlalchemy.*",
+    "uvicorn.*",
+]
+disallow_untyped_calls = false
+ignore_missing_imports = true
