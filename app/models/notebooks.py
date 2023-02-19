@@ -30,9 +30,9 @@ class Notebook(Base):
         stmt = select(cls)
         if include_notes:
             stmt = stmt.options(selectinload(cls.notes))
-        stream = await session.stream(stmt.order_by(cls.id))
+        stream = await session.stream_scalars(stmt.order_by(cls.id))
         async for row in stream:
-            yield row.Notebook
+            yield row
 
     @classmethod
     async def read_by_id(
@@ -41,11 +41,7 @@ class Notebook(Base):
         stmt = select(cls).where(cls.id == notebook_id)
         if include_notes:
             stmt = stmt.options(selectinload(cls.notes))
-        result = (await session.execute(stmt.order_by(cls.id))).first()
-        if result:
-            return result.Notebook
-        else:
-            return None
+        return await session.scalar(stmt.order_by(cls.id))
 
     @classmethod
     async def create(cls, session: AsyncSession, title: str, notes: list[Note]) -> Notebook:
