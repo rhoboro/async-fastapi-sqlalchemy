@@ -36,18 +36,14 @@ class Note(Base):
     @classmethod
     async def read_all(cls, session: AsyncSession) -> AsyncIterator[Note]:
         stmt = select(cls).options(joinedload(cls.notebook, innerjoin=True))
-        stream = await session.stream(stmt.order_by(cls.id))
+        stream = await session.stream_scalars(stmt.order_by(cls.id))
         async for row in stream:
-            yield row.Note
+            yield row
 
     @classmethod
     async def read_by_id(cls, session: AsyncSession, note_id: int) -> Optional[Note]:
         stmt = select(cls).where(cls.id == note_id).options(joinedload(cls.notebook))
-        result = (await session.execute(stmt.order_by(cls.id))).first()
-        if result:
-            return result.Note
-        else:
-            return None
+        return await session.scalar(stmt.order_by(cls.id))
 
     @classmethod
     async def read_by_ids(cls, session: AsyncSession, note_ids: list[int]) -> AsyncIterator[Note]:
@@ -56,9 +52,9 @@ class Note(Base):
             .where(cls.id.in_(note_ids))  # type: ignore
             .options(joinedload(cls.notebook))
         )
-        stream = await session.stream(stmt.order_by(cls.id))
+        stream = await session.stream_scalars(stmt.order_by(cls.id))
         async for row in stream:
-            yield row.Note
+            yield row
 
     @classmethod
     async def create(
