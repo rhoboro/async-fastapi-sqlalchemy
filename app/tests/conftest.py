@@ -1,11 +1,11 @@
-from typing import Generator
+from typing import AsyncGenerator, Generator
 
 import pytest
 from httpx import AsyncClient
-from sqlalchemy import create_engine, event
+from sqlalchemy import create_engine, event, text
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.orm import Session, SessionTransaction
 
 from app.db import get_session
 from app.main import app
@@ -16,7 +16,7 @@ settings = Settings()
 
 
 @pytest.fixture
-async def ac() -> Generator:
+async def ac() -> AsyncGenerator:
     async with AsyncClient(app=app, base_url="https://test") as c:
         yield c
 
@@ -26,9 +26,9 @@ def setup_db() -> Generator:
     engine = create_engine(f"{settings.DB_URI.replace('+asyncpg', '')}")
     conn = engine.connect()
     # トランザクションを一度終了させる
-    conn.execute("commit")
+    conn.execute(text("commit"))
     try:
-        conn.execute("drop database test")
+        conn.execute(text("drop database test"))
     except SQLAlchemyError:
         pass
     finally:
@@ -36,24 +36,24 @@ def setup_db() -> Generator:
 
     conn = engine.connect()
     # トランザクションを一度終了させる
-    conn.execute("commit")
-    conn.execute("create database test")
+    conn.execute(text("commit"))
+    conn.execute(text("create database test"))
     conn.close()
 
     yield
 
     conn = engine.connect()
     # トランザクションを一度終了させる
-    conn.execute("commit")
+    conn.execute(text("commit"))
     try:
-        conn.execute("drop database test")
+        conn.execute(text("drop database test"))
     except SQLAlchemyError:
         pass
     conn.close()
 
 
 @pytest.fixture(scope="session", autouse=True)
-def setup_test_db(setup_db):
+def setup_test_db(setup_db: Generator) -> Generator:
     engine = create_engine(f"{settings.DB_URI.replace('+asyncpg', '')}/test")
 
     with engine.begin():
@@ -64,29 +64,29 @@ def setup_test_db(setup_db):
 
 
 @pytest.fixture
-async def session():
+async def session() -> AsyncGenerator:
     # https://github.com/sqlalchemy/sqlalchemy/issues/5811#issuecomment-756269881
     async_engine = create_async_engine(f"{settings.DB_URI}/test")
     async with async_engine.connect() as conn:
 
         await conn.begin()
         await conn.begin_nested()
-        AsyncSessionLocal = sessionmaker(
+        AsyncSessionLocal = async_sessionmaker(
             autocommit=False,
             autoflush=False,
             bind=conn,
             future=True,
-            class_=AsyncSession,
         )
 
         async_session = AsyncSessionLocal()
 
         @event.listens_for(async_session.sync_session, "after_transaction_end")
-        def end_savepoint(session, transaction):
+        def end_savepoint(session: Session, transaction: SessionTransaction) -> None:
             if conn.closed:
                 return
-            if not conn.in_nested_transaction:
-                conn.sync_connection.begin_nested()
+            if not conn.in_nested_transaction():
+                if conn.sync_connection:
+                    conn.sync_connection.begin_nested()
 
         def test_get_session() -> Generator:
             try:

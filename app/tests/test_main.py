@@ -3,7 +3,7 @@ from httpx import AsyncClient
 
 
 @pytest.mark.asyncio
-async def test_health(ac: AsyncClient):
+async def test_health(ac: AsyncClient) -> None:
     response = await ac.get(
         "/",
     )
