@@ -3,9 +3,9 @@ from __future__ import annotations
 from typing import AsyncIterator, Optional
 
 from pydantic import BaseModel
-from sqlalchemy import Column, Integer, String, select
+from sqlalchemy import String, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import relationship, selectinload
+from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 
 from .base import Base
 
@@ -13,12 +13,12 @@ from .base import Base
 class Notebook(Base):
     __tablename__ = "notebooks"
 
-    id: int = Column(
-        "id", Integer(), autoincrement=True, nullable=False, unique=True, primary_key=True
+    id: Mapped[int] = mapped_column(
+        "id", autoincrement=True, nullable=False, unique=True, primary_key=True
     )
-    title: str = Column("title", String(length=64), nullable=False)
+    title: Mapped[str] = mapped_column("title", String(length=64), nullable=False)
 
-    notes: list[Note] = relationship(
+    notes: Mapped[list[Note]] = relationship(
         "Note",
         back_populates="notebook",
         order_by="Note.id",
