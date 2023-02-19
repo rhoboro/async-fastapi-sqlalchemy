@@ -38,7 +38,13 @@ INFO  [alembic.runtime.migration] Running upgrade a8483365f505 -> 24104b6e1e0c, 
 # Run
 
 ```shell
-(venv) $ APP_CONFIG_FILE=local uvicorn app.main:app --reload-dir app
+(venv) $ APP_CONFIG_FILE=local uvicorn app.main:app --reload --reload-dir app
+INFO:     Will watch for changes in these directories: ['/Users/rhoboro/go/src/github.com/rhoboro/async-fastapi-sqlalchemy/app']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [49448] using WatchFiles
+INFO:     Started server process [49450]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
 ```
 
 You can now access [localhost:8000/docs](http://localhost:8000/docs) to see the API documentation.
@@ -48,6 +54,7 @@ You can now access [localhost:8000/docs](http://localhost:8000/docs) to see the 
 
 ```shell
 (venv) $ pip install -r requirements_test.txt
+(venv) $ black app
 (venv) $ ruff app
 (venv) $ mypy app
 (venv) $ pytest app

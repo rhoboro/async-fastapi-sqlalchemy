@@ -3,10 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, AsyncIterator, Optional
 
 from pydantic import BaseModel
-from sqlalchemy import Column, ForeignKey, Integer, String, Text, select
+from sqlalchemy import ForeignKey, String, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import joinedload, relationship
+from sqlalchemy.orm import Mapped, joinedload, mapped_column, relationship
 
 if TYPE_CHECKING:
     from .notebooks import Notebook
@@ -17,15 +17,17 @@ from .base import Base
 class Note(Base):
     __tablename__ = "notes"
 
-    id: int = Column(
-        "id", Integer(), autoincrement=True, nullable=False, unique=True, primary_key=True
+    id: Mapped[int] = mapped_column(
+        "id", autoincrement=True, nullable=False, unique=True, primary_key=True
     )
-    title: str = Column("title", String(length=64), nullable=False)
-    content: str = Column("content", Text(), nullable=False, default="")
+    title: Mapped[str] = mapped_column("title", String(length=64), nullable=False)
+    content: Mapped[str] = mapped_column("content", nullable=False, default="")
 
-    notebook_id: int = Column("notebook_id", Integer(), ForeignKey("notebooks.id"), nullable=False)
+    notebook_id: Mapped[int] = mapped_column(
+        "notebook_id", ForeignKey("notebooks.id"), nullable=False
+    )
 
-    notebook: Notebook = relationship("Notebook", back_populates="notes")
+    notebook: Mapped[Notebook] = relationship("Notebook", back_populates="notes")
 
     @hybrid_property
     def notebook_title(self) -> str:

@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.tests.utils import ID_STRING
 
 
-async def setup_data(session: AsyncSession):
+async def setup_data(session: AsyncSession) -> None:
     from app.models import Note, Notebook
 
     notebook1 = Notebook(title="Notebook 1", notes=[])
