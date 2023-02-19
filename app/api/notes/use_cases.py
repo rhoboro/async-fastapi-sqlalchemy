@@ -1,14 +1,14 @@
 from typing import AsyncIterator
 
 from fastapi import Depends, HTTPException
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from app.db import get_session
 from app.models import Note, Notebook, NoteSchema
 
 
 class CreateNote:
-    def __init__(self, session: sessionmaker = Depends(get_session)) -> None:
+    def __init__(self, session: async_sessionmaker = Depends(get_session)) -> None:
         self.async_session = session
 
     async def execute(self, notebook_id: int, title: str, content: str) -> NoteSchema:
@@ -21,7 +21,7 @@ class CreateNote:
 
 
 class ReadAllNote:
-    def __init__(self, session: sessionmaker = Depends(get_session)) -> None:
+    def __init__(self, session: async_sessionmaker = Depends(get_session)) -> None:
         self.async_session = session
 
     async def execute(self) -> AsyncIterator[NoteSchema]:
@@ -31,7 +31,7 @@ class ReadAllNote:
 
 
 class ReadNote:
-    def __init__(self, session: sessionmaker = Depends(get_session)) -> None:
+    def __init__(self, session: async_sessionmaker = Depends(get_session)) -> None:
         self.async_session = session
 
     async def execute(self, note_id: int) -> NoteSchema:
@@ -43,7 +43,7 @@ class ReadNote:
 
 
 class UpdateNote:
-    def __init__(self, session: sessionmaker = Depends(get_session)) -> None:
+    def __init__(self, session: async_sessionmaker = Depends(get_session)) -> None:
         self.async_session = session
 
     async def execute(self, note_id: int, notebook_id: int, title: str, content: str) -> NoteSchema:
@@ -66,7 +66,7 @@ class UpdateNote:
 
 
 class DeleteNote:
-    def __init__(self, session: sessionmaker = Depends(get_session)) -> None:
+    def __init__(self, session: async_sessionmaker = Depends(get_session)) -> None:
         self.async_session = session
 
     async def execute(self, note_id: int) -> None:
