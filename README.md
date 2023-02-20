@@ -1,6 +1,6 @@
-# Async Web API with FastAPI + SQLAlchemy 2.0 Style
+# Async Web API with FastAPI + SQLAlchemy 2.0
 
-This is a sample project of Async Web API with FastAPI + SQLAlchemy 2.0 Style.
+This is a sample project of Async Web API with FastAPI + SQLAlchemy 2.0.
 It includes asynchronous DB access using asyncpg and test code covering them.
 
 This sample project is explained in this blog (written in Japanese).  
