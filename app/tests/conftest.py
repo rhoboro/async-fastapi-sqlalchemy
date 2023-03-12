@@ -12,7 +12,7 @@ from app.main import app
 from app.models.base import Base
 from app.settings import Settings
 
-settings = Settings()
+settings = Settings.parse_obj({})
 
 
 @pytest.fixture
@@ -68,7 +68,6 @@ async def session() -> AsyncGenerator:
     # https://github.com/sqlalchemy/sqlalchemy/issues/5811#issuecomment-756269881
     async_engine = create_async_engine(f"{settings.DB_URI}/test")
     async with async_engine.connect() as conn:
-
         await conn.begin()
         await conn.begin_nested()
         AsyncSessionLocal = async_sessionmaker(

@@ -26,7 +26,7 @@ $ . venv/bin/activate
   -e PGDATA=/var/lib/postgresql/data/pgdata \
   -v $(pwd)/pgdata:/var/lib/postgresql/data \
   -p 5432:5432 \
-  postgres:14.4-alpine
+  postgres:15.2-alpine
 
 (venv) $ APP_CONFIG_FILE=local alembic upgrade head
 INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.

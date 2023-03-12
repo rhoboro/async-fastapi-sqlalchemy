@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from app.api.main import router as api_router
 from app.settings import Settings
 
-settings = Settings()
+settings = Settings.parse_obj({})
 app = FastAPI(title="async-fastapi-sqlalchemy")
 
 app.include_router(api_router, prefix="/api")
