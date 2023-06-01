@@ -1,12 +1,9 @@
-from typing import Annotated, AsyncIterator
+from typing import AsyncIterator
 
-from fastapi import Depends, HTTPException
-from sqlalchemy.ext.asyncio import async_sessionmaker
+from fastapi import HTTPException
 
-from app.db import get_session
+from app.db import AsyncSession
 from app.models import Note, Notebook, NotebookSchema
-
-AsyncSession = Annotated[async_sessionmaker, Depends(get_session)]
 
 
 class CreateNotebook:
