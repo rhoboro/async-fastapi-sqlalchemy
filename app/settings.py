@@ -12,3 +12,6 @@ class Settings(BaseSettings):
         env = os.environ["APP_CONFIG_FILE"]
         env_file = Path(__file__).parent / f"config/{env}.env"
         case_sensitive = True
+
+
+settings = Settings.parse_obj({})

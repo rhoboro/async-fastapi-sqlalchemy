@@ -5,10 +5,9 @@ from fastapi import Depends
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-from app.settings import Settings
+from app.settings import settings
 
 logger = logging.getLogger(__name__)
-settings = Settings.parse_obj({})
 
 async_engine = create_async_engine(
     settings.DB_URI,
