@@ -8,6 +8,9 @@ select = ["E", "F", "I"]
 [tool.ruff.per-file-ignores]
 "app/models/__init__.py" = ["F401"]
 
+[tool.mypy]
+plugins = ["pydantic.mypy"]
+
 [[tool.mypy.overrides]]
 module = [
   "app.*"

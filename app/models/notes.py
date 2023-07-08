@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, AsyncIterator, Optional
+from typing import TYPE_CHECKING, AsyncIterator
 
-from pydantic import BaseModel
 from sqlalchemy import ForeignKey, String, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -41,7 +40,7 @@ class Note(Base):
             yield row
 
     @classmethod
-    async def read_by_id(cls, session: AsyncSession, note_id: int) -> Optional[Note]:
+    async def read_by_id(cls, session: AsyncSession, note_id: int) -> Note | None:
         stmt = select(cls).where(cls.id == note_id).options(joinedload(cls.notebook))
         return await session.scalar(stmt.order_by(cls.id))
 
@@ -82,14 +81,3 @@ class Note(Base):
     async def delete(cls, session: AsyncSession, note: Note) -> None:
         await session.delete(note)
         await session.flush()
-
-
-class NoteSchema(BaseModel):
-    id: int
-    title: str
-    content: str
-    notebook_id: int
-    notebook_title: str
-
-    class Config:
-        orm_mode = True

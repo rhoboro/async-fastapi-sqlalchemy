@@ -16,7 +16,7 @@ class CreateNote:
             if not notebook:
                 raise HTTPException(status_code=404)
             note = await Note.create(session, notebook.id, title, content)
-            return NoteSchema.from_orm(note)
+            return NoteSchema.model_validate(note)
 
 
 class ReadAllNote:
@@ -26,7 +26,7 @@ class ReadAllNote:
     async def execute(self) -> AsyncIterator[NoteSchema]:
         async with self.async_session() as session:
             async for note in Note.read_all(session):
-                yield NoteSchema.from_orm(note)
+                yield NoteSchema.model_validate(note)
 
 
 class ReadNote:
@@ -38,7 +38,7 @@ class ReadNote:
             note = await Note.read_by_id(session, note_id)
             if not note:
                 raise HTTPException(status_code=404)
-            return NoteSchema.from_orm(note)
+            return NoteSchema.model_validate(note)
 
 
 class UpdateNote:
@@ -61,7 +61,7 @@ class UpdateNote:
 
             await note.update(session, notebook_id_, title, content)
             await session.refresh(note)
-            return NoteSchema.from_orm(note)
+            return NoteSchema.model_validate(note)
 
 
 class DeleteNote:
