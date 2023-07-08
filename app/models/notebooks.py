@@ -1,13 +1,15 @@
 from __future__ import annotations
 
-from typing import AsyncIterator, Optional
+from typing import TYPE_CHECKING, AsyncIterator
 
-from pydantic import BaseModel, ConfigDict
 from sqlalchemy import String, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 
 from .base import Base
+
+if TYPE_CHECKING:
+    from .notes import Note
 
 
 class Notebook(Base):
@@ -37,7 +39,7 @@ class Notebook(Base):
     @classmethod
     async def read_by_id(
         cls, session: AsyncSession, notebook_id: int, include_notes: bool = False
-    ) -> Optional[Notebook]:
+    ) -> Notebook | None:
         stmt = select(cls).where(cls.id == notebook_id)
         if include_notes:
             stmt = stmt.options(selectinload(cls.notes))
@@ -66,16 +68,3 @@ class Notebook(Base):
     async def delete(cls, session: AsyncSession, notebook: Notebook) -> None:
         await session.delete(notebook)
         await session.flush()
-
-
-class NotebookSchema(BaseModel):
-    id: int
-    title: str
-    notes: list[NoteSchema]
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-from .notes import Note, NoteSchema  # noqa: E402
-
-NotebookSchema.model_rebuild()
