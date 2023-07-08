@@ -16,7 +16,7 @@ class CreateNotebook:
             if len(exist_notes) != len(notes):
                 raise HTTPException(status_code=404)
             notebook = await Notebook.create(session, title, exist_notes)
-            return NotebookSchema.from_orm(notebook)
+            return NotebookSchema.model_validate(notebook)
 
 
 class ReadAllNotebook:
@@ -26,7 +26,7 @@ class ReadAllNotebook:
     async def execute(self) -> AsyncIterator[NotebookSchema]:
         async with self.async_session() as session:
             async for notebook in Notebook.read_all(session, include_notes=True):
-                yield NotebookSchema.from_orm(notebook)
+                yield NotebookSchema.model_validate(notebook)
 
 
 class ReadNotebook:
@@ -38,7 +38,7 @@ class ReadNotebook:
             notebook = await Notebook.read_by_id(session, notebook_id, include_notes=True)
             if not notebook:
                 raise HTTPException(status_code=404)
-            return NotebookSchema.from_orm(notebook)
+            return NotebookSchema.model_validate(notebook)
 
 
 class UpdateNotebook:
@@ -56,7 +56,7 @@ class UpdateNotebook:
                 raise HTTPException(status_code=404)
             await notebook.update(session, title, exist_notes)
             await session.refresh(notebook)
-            return NotebookSchema.from_orm(notebook)
+            return NotebookSchema.model_validate(notebook)
 
 
 class DeleteNotebook:

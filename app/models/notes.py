@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, AsyncIterator, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from sqlalchemy import ForeignKey, String, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -91,5 +91,4 @@ class NoteSchema(BaseModel):
     notebook_id: int
     notebook_title: str
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)

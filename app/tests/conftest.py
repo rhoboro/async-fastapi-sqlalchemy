@@ -10,9 +10,7 @@ from sqlalchemy.orm import Session, SessionTransaction
 from app.db import get_session
 from app.main import app
 from app.models.base import Base
-from app.settings import Settings
-
-settings = Settings.parse_obj({})
+from app.settings import settings
 
 
 @pytest.fixture

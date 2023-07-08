@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import AsyncIterator, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from sqlalchemy import String, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
@@ -73,10 +73,9 @@ class NotebookSchema(BaseModel):
     title: str
     notes: list[NoteSchema]
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 from .notes import Note, NoteSchema  # noqa: E402
 
-NotebookSchema.update_forward_refs()
+NotebookSchema.model_rebuild()
