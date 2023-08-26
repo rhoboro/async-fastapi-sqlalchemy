@@ -2,7 +2,7 @@ import pytest
 from httpx import AsyncClient
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_health(ac: AsyncClient) -> None:
     response = await ac.get(
         "/",

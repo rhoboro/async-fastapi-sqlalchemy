@@ -22,7 +22,7 @@ async def setup_data(session: AsyncSession) -> None:
     await session.commit()
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_notebooks_read_all(ac: AsyncClient, session: AsyncSession) -> None:
     """Read all notebooks"""
     # setup
@@ -75,7 +75,7 @@ async def test_notebooks_read_all(ac: AsyncClient, session: AsyncSession) -> Non
     assert expected == response.json()
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_notebooks_read(ac: AsyncClient, session: AsyncSession) -> None:
     """Read a notebook"""
     from app.models import Notebook
@@ -114,7 +114,7 @@ async def test_notebooks_read(ac: AsyncClient, session: AsyncSession) -> None:
     assert expected == response.json()
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_notebooks_create(ac: AsyncClient, session: AsyncSession) -> None:
     """Create a notebook"""
     # execute
@@ -126,7 +126,7 @@ async def test_notebooks_create(ac: AsyncClient, session: AsyncSession) -> None:
     assert expected == response.json()
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_notebooks_update(ac: AsyncClient, session: AsyncSession) -> None:
     """Update a notebook"""
     from app.models import Notebook
@@ -165,7 +165,7 @@ async def test_notebooks_update(ac: AsyncClient, session: AsyncSession) -> None:
     assert 1 == len(notebook.notes)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_notebooks_delete(ac: AsyncClient, session: AsyncSession) -> None:
     """Delete a notebook"""
     from app.models import Note, Notebook

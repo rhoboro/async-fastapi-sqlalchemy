@@ -14,6 +14,11 @@ from app.settings import settings
 
 
 @pytest.fixture
+def anyio_backend():
+    return "asyncio"
+
+
+@pytest.fixture
 async def ac() -> AsyncGenerator:
     async with AsyncClient(app=app, base_url="https://test") as c:
         yield c

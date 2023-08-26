@@ -22,7 +22,7 @@ async def setup_data(session: AsyncSession) -> None:
     await session.commit()
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_notes_read_all(ac: AsyncClient, session: AsyncSession) -> None:
     """Read all notes"""
     # setup
@@ -63,7 +63,7 @@ async def test_notes_read_all(ac: AsyncClient, session: AsyncSession) -> None:
     assert expected == response.json()
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_notes_read(ac: AsyncClient, session: AsyncSession) -> None:
     """Read a note"""
     from app.models import Notebook
@@ -90,7 +90,7 @@ async def test_notes_read(ac: AsyncClient, session: AsyncSession) -> None:
     assert expected == response.json()
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_notes_create(ac: AsyncClient, session: AsyncSession) -> None:
     """Create a note"""
     from app.models import Notebook
@@ -121,7 +121,7 @@ async def test_notes_create(ac: AsyncClient, session: AsyncSession) -> None:
     assert notes_count + 1 == len(notebook.notes)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_notes_update(ac: AsyncClient, session: AsyncSession) -> None:
     """Update a note"""
     from app.models import Notebook
@@ -159,7 +159,7 @@ async def test_notes_update(ac: AsyncClient, session: AsyncSession) -> None:
     assert "Test Content" == note.content
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_notes_delete(ac: AsyncClient, session: AsyncSession) -> None:
     """Delete a note"""
     from app.models import Notebook

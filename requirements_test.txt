@@ -3,7 +3,6 @@ httpx
 mypy
 psycopg2-binary
 pytest
-pytest-asyncio
 pytest-cov
 pytest-env
 pytest-mock
