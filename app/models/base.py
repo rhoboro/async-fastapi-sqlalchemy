@@ -12,7 +12,9 @@ convention = {
 
 class Base(DeclarativeBase):
     __abstract__ = True
-    metadata = MetaData(naming_convention=convention)
+    # TODO: Remove ignore
+    # https://github.com/sqlalchemy/sqlalchemy/issues/10264
+    metadata = MetaData(naming_convention=convention)  # type: ignore
 
     def __repr__(self) -> str:
         columns = ", ".join(
