@@ -53,6 +53,7 @@ def setup_db() -> Generator:
     except SQLAlchemyError:
         pass
     conn.close()
+    engine.dispose()
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -64,6 +65,8 @@ def setup_test_db(setup_db: Generator) -> Generator:
         Base.metadata.create_all(engine)
         yield
         Base.metadata.drop_all(engine)
+
+    engine.dispose()
 
 
 @pytest.fixture
@@ -101,3 +104,5 @@ async def session() -> AsyncGenerator:
         yield async_session
         await async_session.close()
         await conn.rollback()
+
+    await async_engine.dispose()
