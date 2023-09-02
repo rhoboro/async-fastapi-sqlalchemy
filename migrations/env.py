@@ -95,7 +95,7 @@ async def run_migrations_online():
             prefix="sqlalchemy.",
             poolclass=pool.NullPool,
             future=True,
-            # ローカルのDockerコンテナで動かすため下記エラーを抑制
+            # Suppress the following errors to run in a local Docker container
             # ConnectionError: PostgreSQL server at "localhost:5432" rejected SSL upgrade
             connect_args={"ssl": None}
         )

@@ -17,40 +17,40 @@ depends_on = ${repr(depends_on)}
 
 
 def upgrade():
-    # 前処理
+    # Preprocess
     pre_upgrade()
 
     ${upgrades if upgrades else "pass"}
 
-    # 後処理
+    # Postprocess
     post_upgrade()
 
 
 def downgrade():
-    # 前処理
+    # Preprocess
     pre_downgrade()
 
     ${downgrades if downgrades else "pass"}
 
-    # 後処理
+    # Postprocess
     post_downgrade()
 
 
 def pre_upgrade():
-    # スキーマ更新前に実行する必要がある処理
+    # Processing before upgrading the schema
     pass
 
 
 def post_upgrade():
-    # スキーマ更新後に実行する必要がある処理
+    # Processing after upgrading the schema
     pass
 
 
 def pre_downgrade():
-    # スキーマ更新前に実行する必要がある処理
+    # Processing before downgrading the schema
     pass
 
 
 def post_downgrade():
-    # スキーマ更新後に実行する必要がある処理
+    # Processing after downgrading the schema
     pass

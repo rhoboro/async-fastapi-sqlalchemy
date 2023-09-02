@@ -28,7 +28,7 @@ async def ac() -> AsyncGenerator:
 def setup_db() -> Generator:
     engine = create_engine(f"{settings.DB_URI.replace('+asyncpg', '')}")
     conn = engine.connect()
-    # トランザクションを一度終了させる
+    # Terminate transaction
     conn.execute(text("commit"))
     try:
         conn.execute(text("drop database test"))
@@ -38,7 +38,7 @@ def setup_db() -> Generator:
         conn.close()
 
     conn = engine.connect()
-    # トランザクションを一度終了させる
+    # Terminate transaction
     conn.execute(text("commit"))
     conn.execute(text("create database test"))
     conn.close()
@@ -46,7 +46,7 @@ def setup_db() -> Generator:
     yield
 
     conn = engine.connect()
-    # トランザクションを一度終了させる
+    # Terminate transaction
     conn.execute(text("commit"))
     try:
         conn.execute(text("drop database test"))
