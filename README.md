@@ -24,9 +24,14 @@ $ . venv/bin/activate
 (venv) $ docker run -d --name db \
   -e POSTGRES_PASSWORD=password \
   -e PGDATA=/var/lib/postgresql/data/pgdata \
-  -v $(pwd)/pgdata:/var/lib/postgresql/data \
+  -v pgdata:/var/lib/postgresql/data/pgdata \
   -p 5432:5432 \
   postgres:15.2-alpine
+
+# Cleanup database
+# $ docker stop db
+# $ docker rm db
+# $ docker volume rm pgdata
 
 (venv) $ APP_CONFIG_FILE=local alembic upgrade head
 INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
@@ -48,7 +53,6 @@ INFO:     Application startup complete.
 ```
 
 You can now access [localhost:8000/docs](http://localhost:8000/docs) to see the API documentation.
-
 
 # Test
 
