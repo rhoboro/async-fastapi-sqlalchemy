@@ -1,10 +1,6 @@
 import asyncio
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-from sqlalchemy.ext.asyncio import AsyncEngine
-
 from alembic import context
 
 from app.db import async_engine
@@ -89,17 +85,7 @@ async def run_migrations_online():
     and associate a connection with the context.
 
     """
-    connectable = AsyncEngine(
-        engine_from_config(
-            config.get_section(config.config_ini_section),
-            prefix="sqlalchemy.",
-            poolclass=pool.NullPool,
-            future=True,
-            # Suppress the following errors to run in a local Docker container
-            # ConnectionError: PostgreSQL server at "localhost:5432" rejected SSL upgrade
-            connect_args={"ssl": None}
-        )
-    )
+    connectable = async_engine
 
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
