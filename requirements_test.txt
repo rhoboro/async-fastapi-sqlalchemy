@@ -8,4 +8,3 @@ pytest-env
 pytest-mock
 pytest-randomly
 ruff
-

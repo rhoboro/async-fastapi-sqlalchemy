@@ -26,7 +26,7 @@ $ . venv/bin/activate
   -e PGDATA=/var/lib/postgresql/data/pgdata \
   -v pgdata:/var/lib/postgresql/data/pgdata \
   -p 5432:5432 \
-  postgres:15.2-alpine
+  postgres:16.3-alpine
 
 # Cleanup database
 # $ docker stop db
@@ -42,17 +42,83 @@ INFO  [alembic.runtime.migration] Running upgrade a8483365f505 -> 24104b6e1e0c, 
 
 # Run
 
+After start-up, you can access [localhost:8000/docs](http://localhost:8000/docs) to see the api documentation.
+
+## Using `fastapi dev`
+
 ```shell
-(venv) $ APP_CONFIG_FILE=local uvicorn app.main:app --reload --reload-dir app
+(venv) $ APP_CONFIG_FILE=local fastapi dev
 INFO:     Will watch for changes in these directories: ['/Users/rhoboro/go/src/github.com/rhoboro/async-fastapi-sqlalchemy/app']
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 INFO:     Started reloader process [49448] using WatchFiles
 INFO:     Started server process [49450]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
+INFO     Using path app/main.py
+INFO     Resolved absolute path /Users/rhoboro/go/src/github.com/rhoboro/async-fastapi-sqlalchemy/app/main.py
+INFO     Searching for package file structure from directories with __init__.py files
+INFO     Importing from /Users/rhoboro/go/src/github.com/rhoboro/async-fastapi-sqlalchemy
+
+ ╭─ Python package file structure ─╮
+ │                                 │
+ │  📁 app                         │
+ │  ├── 🐍 __init__.py             │
+ │  └── 🐍 main.py                 │
+ │                                 │
+ ╰─────────────────────────────────╯
+
+INFO     Importing module app.main
+INFO     Found importable FastAPI app
+
+ ╭── Importable FastAPI app ──╮
+ │                            │
+ │  from app.main import app  │
+ │                            │
+ ╰────────────────────────────╯
+
+INFO     Using import string app.main:app
+
+ ╭────────── FastAPI CLI - Development mode ───────────╮
+ │                                                     │
+ │  Serving at: http://127.0.0.1:8000                  │
+ │                                                     │
+ │  API docs: http://127.0.0.1:8000/docs               │
+ │                                                     │
+ │  Running in development mode, for production use:   │
+ │                                                     │
+ │  fastapi run                                        │
+ │                                                     │
+ ╰─────────────────────────────────────────────────────╯
+
+INFO:     Will watch for changes in these directories: ['/Users/rhoboro/go/src/github.com/rhoboro/async-fastapi-sqlalchemy']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [47967] using WatchFiles
+INFO:     Started server process [47969]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
 ```
 
-You can now access [localhost:8000/docs](http://localhost:8000/docs) to see the API documentation.
+## Using uvicorn's multiprocess manager
+
+[The uvicorn>=0.30.0 has new multiprocess manager](https://fastapiexpert.com/blog/2024/05/28/uvicorn-0300-release/#add-a-new-multiprocess-manager).
+
+```shell
+(venv) $ APP_CONFIG_FILE=local uvicorn --workers 4 app.main:app                                                                                                                                                                 [main]
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started parent process [46740]
+INFO:     Started server process [46744]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [46742]
+INFO:     Waiting for application startup.
+INFO:     Started server process [46745]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Application startup complete.
+INFO:     Started server process [46743]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+```
 
 # Test
 
