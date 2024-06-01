@@ -46,6 +46,8 @@ After start-up, you can access [localhost:8000/docs](http://localhost:8000/docs)
 
 ## Using `fastapi dev`
 
+[The fastapi>=0.111.0 has a `fastapi` command.](https://fastapi.tiangolo.com/release-notes/#01110)
+
 ```shell
 (venv) $ APP_CONFIG_FILE=local fastapi dev
 INFO:     Will watch for changes in these directories: ['/Users/rhoboro/go/src/github.com/rhoboro/async-fastapi-sqlalchemy/app']
@@ -100,7 +102,7 @@ INFO:     Application startup complete.
 
 ## Using uvicorn's multiprocess manager
 
-[The uvicorn>=0.30.0 has new multiprocess manager](https://fastapiexpert.com/blog/2024/05/28/uvicorn-0300-release/#add-a-new-multiprocess-manager).
+[The uvicorn>=0.30.0 has a new multiprocess manager.](https://fastapiexpert.com/blog/2024/05/28/uvicorn-0300-release/#add-a-new-multiprocess-manager)
 
 ```shell
 (venv) $ APP_CONFIG_FILE=local uvicorn --workers 4 app.main:app                                                                                                                                                                 [main]
