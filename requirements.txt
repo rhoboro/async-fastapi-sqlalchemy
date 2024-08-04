@@ -1,5 +1,5 @@
 alembic
 black
-fastapi
+fastapi[standard]
 pydantic-settings
 sqlalchemy[postgresql_asyncpg]

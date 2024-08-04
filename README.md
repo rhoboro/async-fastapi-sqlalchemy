@@ -105,7 +105,7 @@ INFO:     Application startup complete.
 [The uvicorn>=0.30.0 has a new multiprocess manager.](https://fastapiexpert.com/blog/2024/05/28/uvicorn-0300-release/#add-a-new-multiprocess-manager)
 
 ```shell
-(venv) $ APP_CONFIG_FILE=local uvicorn --workers 4 app.main:app                                                                                                                                                                 [main]
+(venv) $ APP_CONFIG_FILE=local uvicorn --workers 4 app.main:app
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 INFO:     Started parent process [46740]
 INFO:     Started server process [46744]
