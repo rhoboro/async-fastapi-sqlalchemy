@@ -127,7 +127,7 @@ INFO:     Application startup complete.
 ```shell
 (venv) $ pip install -r requirements_test.txt
 (venv) $ black app
-(venv) $ ruff app
+(venv) $ ruff check app
 (venv) $ mypy app
 (venv) $ pytest app
 ```

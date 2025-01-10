@@ -1,7 +1,7 @@
 from typing import AsyncGenerator, Generator
 
 import pytest
-from httpx import AsyncClient
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy import create_engine, event, text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
@@ -20,7 +20,10 @@ def anyio_backend() -> str:
 
 @pytest.fixture
 async def ac() -> AsyncGenerator:
-    async with AsyncClient(app=app, base_url="https://test") as c:
+    async with AsyncClient(
+        transport=ASGITransport(app=app),
+        base_url="https://test",
+    ) as c:
         yield c
 
 
