@@ -1,3 +1,17 @@
+[project]
+name = "async-fastapi-sqlalchemy"
+version = "0.1.0"
+description = "Async Web API with FastAPI + SQLAlchemy 2.0"
+readme = "README.md"
+requires-python = "==3.13.*"
+dependencies = [
+    "alembic>=1.14.1",
+    "black>=25.1.0",
+    "fastapi[standard]>=0.115.8",
+    "pydantic-settings>=2.7.1",
+    "sqlalchemy[postgresql-asyncpg]>=2.0.38",
+]
+
 [tool.black]
 line-length = 100
 
@@ -36,4 +50,18 @@ markers = [
 ]
 env = [
   "APP_CONFIG_FILE=test"
+]
+
+[dependency-groups]
+testing = [
+    "eqassertions>=0.4",
+    "httpx>=0.28.1",
+    "mypy>=1.15.0",
+    "psycopg2-binary>=2.9.10",
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0",
+    "pytest-env>=1.1.5",
+    "pytest-mock>=3.14.0",
+    "pytest-randomly>=3.16.0",
+    "ruff>=0.9.6",
 ]
