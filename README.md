@@ -8,11 +8,42 @@ https://www.rhoboro.com/2021/06/12/async-fastapi-sqlalchemy.html
 
 If you want to use prisma instead of sqlalchemy, see [rhoboro/async-fastapi-prisma](https://github.com/rhoboro/async-fastapi-prisma).
 
-# Setup
+
+# Run with docker compose
+
+After start-up, you can access [localhost:8000/docs](http://localhost:8000/docs) to see the api documentation.
+
+```shell
+$ docker compose up -w
+```
+
+## Setup a database and create tables
+
+```shell
+$ docker compose exec app uv run alembic upgrade head
+```
+
+## Test
+
+```shell
+$ docker compose exec app uv sync --frozen --group testing
+$ docker compose exec app uv run black app
+$ docker compose exec app uv run ruff check app
+$ docker compose exec app uv run mypy app
+$ docker compose exec app uv run pytest app
+```
+
+## Cleanup
+
+```shell
+$ docker compose down -v
+```
+
+# Run without docker compose
 
 This project uses [uv](https://docs.astral.sh/uv/).
 
-## Install
+## Install dependencies
 
 ```shell
 $ uv sync --frozen
@@ -34,23 +65,17 @@ $ docker run -d --name db \
 # $ docker volume rm pgdata
 
 # If your database host is not localhost, edit `DB_URI` in `app/config/local.env`.
-$ APP_CONFIG_FILE=local uv run -- alembic upgrade head
+$ APP_CONFIG_FILE=local uv run alembic upgrade head
 INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
 INFO  [alembic.runtime.migration] Will assume transactional DDL.
 INFO  [alembic.runtime.migration] Running upgrade  -> a8483365f505, initial_empty
 INFO  [alembic.runtime.migration] Running upgrade a8483365f505 -> 24104b6e1e0c, add_tables
 ```
 
-# Run
-
-After start-up, you can access [localhost:8000/docs](http://localhost:8000/docs) to see the api documentation.
-
-## Using `fastapi dev`
-
-[The fastapi>=0.111.0 has a `fastapi` command.](https://fastapi.tiangolo.com/release-notes/#01110)
+## Run
 
 ```shell
-$ APP_CONFIG_FILE=local uv run -- fastapi dev
+$ APP_CONFIG_FILE=local uv run fastapi dev
 INFO:     Will watch for changes in these directories: ['/Users/rhoboro/go/src/github.com/rhoboro/async-fastapi-sqlalchemy/app']
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 INFO:     Started reloader process [49448] using WatchFiles
@@ -101,12 +126,12 @@ INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 ```
 
-# Test
+## Test
 
 ```shell
 $ uv sync --fronzen --group testing
-$ uv run -- black app
-$ uv run -- ruff check app
-$ uv run -- mypy app
-$ uv run -- pytest app
+$ uv run black app
+$ uv run ruff check app
+$ uv run mypy app
+$ uv run pytest app
 ```
