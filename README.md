@@ -129,7 +129,7 @@ INFO:     Application startup complete.
 ## Test
 
 ```shell
-$ uv sync --fronzen --group testing
+$ uv sync --frozen --group testing
 $ uv run black app
 $ uv run ruff check app
 $ uv run mypy app
