@@ -1,0 +1,28 @@
+services:
+  app:
+    image: async-fastapi-sqlalchemy
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    environment:
+      APP_CONFIG_FILE: compose
+    depends_on:
+      - db
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+        - action: rebuild
+          path: ./pyproject.toml
+  db:
+    image: postgres:16.3-alpine
+    environment:
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:

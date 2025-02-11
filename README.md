@@ -8,20 +8,51 @@ https://www.rhoboro.com/2021/06/12/async-fastapi-sqlalchemy.html
 
 If you want to use prisma instead of sqlalchemy, see [rhoboro/async-fastapi-prisma](https://github.com/rhoboro/async-fastapi-prisma).
 
-# Setup
 
-## Install
+# Run with docker compose
+
+After start-up, you can access [localhost:8000/docs](http://localhost:8000/docs) to see the api documentation.
 
 ```shell
-$ python3 -m venv venv
-$ . venv/bin/activate
-(venv) $ pip install -r requirements.lock
+$ docker compose up -w
 ```
 
 ## Setup a database and create tables
 
 ```shell
-(venv) $ docker run -d --name db \
+$ docker compose exec app uv run alembic upgrade head
+```
+
+## Test
+
+```shell
+$ docker compose exec app uv sync --frozen --group testing
+$ docker compose exec app uv run black app
+$ docker compose exec app uv run ruff check app
+$ docker compose exec app uv run mypy app
+$ docker compose exec app uv run pytest app
+```
+
+## Cleanup
+
+```shell
+$ docker compose down -v
+```
+
+# Run without docker compose
+
+This project uses [uv](https://docs.astral.sh/uv/).
+
+## Install dependencies
+
+```shell
+$ uv sync --frozen
+```
+
+## Setup a database and create tables
+
+```shell
+$ docker run -d --name db \
   -e POSTGRES_PASSWORD=password \
   -e PGDATA=/var/lib/postgresql/data/pgdata \
   -v pgdata:/var/lib/postgresql/data/pgdata \
@@ -33,23 +64,18 @@ $ . venv/bin/activate
 # $ docker rm db
 # $ docker volume rm pgdata
 
-(venv) $ APP_CONFIG_FILE=local alembic upgrade head
+# If your database host is not localhost, edit `DB_URI` in `app/config/local.env`.
+$ APP_CONFIG_FILE=local uv run alembic upgrade head
 INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
 INFO  [alembic.runtime.migration] Will assume transactional DDL.
 INFO  [alembic.runtime.migration] Running upgrade  -> a8483365f505, initial_empty
 INFO  [alembic.runtime.migration] Running upgrade a8483365f505 -> 24104b6e1e0c, add_tables
 ```
 
-# Run
-
-After start-up, you can access [localhost:8000/docs](http://localhost:8000/docs) to see the api documentation.
-
-## Using `fastapi dev`
-
-[The fastapi>=0.111.0 has a `fastapi` command.](https://fastapi.tiangolo.com/release-notes/#01110)
+## Run
 
 ```shell
-(venv) $ APP_CONFIG_FILE=local fastapi dev
+$ APP_CONFIG_FILE=local uv run fastapi dev
 INFO:     Will watch for changes in these directories: ['/Users/rhoboro/go/src/github.com/rhoboro/async-fastapi-sqlalchemy/app']
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 INFO:     Started reloader process [49448] using WatchFiles
@@ -100,34 +126,12 @@ INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 ```
 
-## Using uvicorn's multiprocess manager
-
-[The uvicorn>=0.30.0 has a new multiprocess manager.](https://fastapiexpert.com/blog/2024/05/28/uvicorn-0300-release/#add-a-new-multiprocess-manager)
+## Test
 
 ```shell
-(venv) $ APP_CONFIG_FILE=local uvicorn --workers 4 app.main:app
-INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-INFO:     Started parent process [46740]
-INFO:     Started server process [46744]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Started server process [46742]
-INFO:     Waiting for application startup.
-INFO:     Started server process [46745]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Application startup complete.
-INFO:     Started server process [46743]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-```
-
-# Test
-
-```shell
-(venv) $ pip install -r requirements_test.txt
-(venv) $ black app
-(venv) $ ruff check app
-(venv) $ mypy app
-(venv) $ pytest app
+$ uv sync --fronzen --group testing
+$ uv run black app
+$ uv run ruff check app
+$ uv run mypy app
+$ uv run pytest app
 ```
