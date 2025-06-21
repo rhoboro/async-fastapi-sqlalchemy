@@ -129,6 +129,7 @@ INFO:     Application startup complete.
 ## Test
 
 ```shell
+$ # Rewrite `db` to `localhost` in app/config/test.env
 $ uv sync --frozen --group testing
 $ uv run black app
 $ uv run ruff check app
