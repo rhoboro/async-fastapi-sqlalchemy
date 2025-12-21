@@ -6,14 +6,10 @@ readme = "README.md"
 requires-python = "==3.13.*"
 dependencies = [
     "alembic>=1.14.1",
-    "black>=25.1.0",
     "fastapi[standard]>=0.115.8",
     "pydantic-settings>=2.7.1",
     "sqlalchemy[postgresql-asyncpg]>=2.0.38",
 ]
-
-[tool.black]
-line-length = 100
 
 [tool.ruff]
 line-length = 100

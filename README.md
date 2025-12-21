@@ -27,7 +27,7 @@ $ docker compose exec app uv run alembic upgrade head
 
 ```shell
 $ docker compose exec app uv sync --frozen --group testing
-$ docker compose exec app uv run black app
+$ docker compose exec app uv run ruff format app
 $ docker compose exec app uv run ruff check app
 $ docker compose exec app uv run mypy app
 $ docker compose exec app uv run pytest app
@@ -131,7 +131,7 @@ INFO:     Application startup complete.
 ```shell
 $ # Rewrite `db` to `localhost` in app/config/test.env
 $ uv sync --frozen --group testing
-$ uv run black app
+$ uv run ruff format app
 $ uv run ruff check app
 $ uv run mypy app
 $ uv run pytest app
