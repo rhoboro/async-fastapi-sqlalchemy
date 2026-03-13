@@ -57,7 +57,7 @@ $ docker run -d --name db \
   -e PGDATA=/var/lib/postgresql/data/pgdata \
   -v pgdata:/var/lib/postgresql/data/pgdata \
   -p 5432:5432 \
-  postgres:16.3-alpine
+  postgres:18.3-alpine
 
 # Cleanup database
 # $ docker stop db

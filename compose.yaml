@@ -7,6 +7,9 @@ services:
       - "8000:8000"
     environment:
       APP_CONFIG_FILE: compose
+      UVICORN_LOG_LEVEL: debug
+      PYTHONASYNCIODEBUG: true
+      PYTHONWARNINGS: default::ResourceWarning
     depends_on:
       - db
     develop:
@@ -17,7 +20,7 @@ services:
         - action: rebuild
           path: ./pyproject.toml
   db:
-    image: postgres:16.3-alpine
+    image: postgres:18.3-alpine
     environment:
       POSTGRES_PASSWORD: password
       PGDATA: /var/lib/postgresql/data/pgdata
