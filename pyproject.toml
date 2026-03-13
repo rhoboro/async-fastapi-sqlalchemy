@@ -11,8 +11,12 @@ dependencies = [
     "sqlalchemy[postgresql-asyncpg]>=2.0.38",
 ]
 
+[tool.fastapi]
+entrypoint = "app.main:app"
+
 [tool.ruff]
 line-length = 100
+include = ["app/**/*.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]
@@ -21,6 +25,7 @@ select = ["E", "F", "I"]
 "app/models/__init__.py" = ["F401"]
 
 [tool.mypy]
+files = ["app"]
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
@@ -32,13 +37,13 @@ follow_imports = "normal"
 disallow_untyped_defs = true
 disallow_untyped_calls = true
 
-[tool.pytest.ini_options]
+[tool.pytest]
 asyncio_mode = "auto"
 disable_test_id_escaping_and_forfeit_all_rights_to_community_support = true
 testpaths = [
   "app"
 ]
-addopts = "-v -rsxX -l --tb=short --strict --cov=app -p no:warnings"
+addopts = ["-v", "-rsxX", "-l", "--tb=short", "--strict", "--cov=app", "-p", "no:warnings"]
 xfails_strict = true
 markers = [
   "tmp: Temporary",
