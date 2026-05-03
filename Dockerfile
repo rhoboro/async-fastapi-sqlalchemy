@@ -1,4 +1,4 @@
-FROM python:3.13-slim
+FROM python:3.14-slim
 
 WORKDIR /app
 RUN groupadd -r app \
@@ -6,7 +6,7 @@ RUN groupadd -r app \
   && chown app /app
 USER app
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
+COPY --from=astral/uv:latest /uv /bin/
 RUN --mount=type=cache,target=/app/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \

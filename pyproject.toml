@@ -3,7 +3,7 @@ name = "async-fastapi-sqlalchemy"
 version = "0.1.0"
 description = "Async Web API with FastAPI + SQLAlchemy 2.0"
 readme = "README.md"
-requires-python = "==3.13.*"
+requires-python = "==3.14.*"
 dependencies = [
     "alembic>=1.14.1",
     "fastapi[standard]>=0.115.8",
