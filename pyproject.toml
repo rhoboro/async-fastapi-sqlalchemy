@@ -38,13 +38,12 @@ disallow_untyped_defs = true
 disallow_untyped_calls = true
 
 [tool.pytest]
-asyncio_mode = "auto"
 disable_test_id_escaping_and_forfeit_all_rights_to_community_support = true
 testpaths = [
   "app"
 ]
 addopts = ["-v", "-rsxX", "-l", "--tb=short", "--strict", "--cov=app", "-p", "no:warnings"]
-xfails_strict = true
+strict_xfail = true
 markers = [
   "tmp: Temporary",
   "optional: Optional",
