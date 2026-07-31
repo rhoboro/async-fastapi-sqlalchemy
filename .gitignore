@@ -3,6 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,osx
 
 pgdata/
+.zed/
 
 ### OSX ###
 # General
