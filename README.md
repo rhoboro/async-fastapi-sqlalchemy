@@ -8,38 +8,7 @@ https://www.rhoboro.com/2021/06/12/async-fastapi-sqlalchemy.html
 
 If you want to use prisma instead of sqlalchemy, see [rhoboro/async-fastapi-prisma](https://github.com/rhoboro/async-fastapi-prisma).
 
-
-# Run with docker compose
-
-After start-up, you can access [localhost:8000/docs](http://localhost:8000/docs) to see the api documentation.
-
-```shell
-$ docker compose up -w
-```
-
-## Setup a database and create tables
-
-```shell
-$ docker compose exec app uv run alembic upgrade head
-```
-
-## Test
-
-```shell
-$ docker compose exec app uv sync --frozen --group testing
-$ docker compose exec app uv run ruff format
-$ docker compose exec app uv run ruff check
-$ docker compose exec app uv run mypy
-$ docker compose exec app uv run pytest
-```
-
-## Cleanup
-
-```shell
-$ docker compose down -v
-```
-
-# Run without docker compose
+# Getting Started
 
 This project uses [uv](https://docs.astral.sh/uv/).
 
@@ -58,11 +27,6 @@ $ docker run -d --name db \
   -v pgdata:/var/lib/postgresql/data/pgdata \
   -p 5432:5432 \
   postgres:18.3-alpine
-
-# Cleanup database
-# $ docker stop db
-# $ docker rm db
-# $ docker volume rm pgdata
 
 # If your database host is not localhost, edit `DB_URI` in `app/config/local.env`.
 $ APP_CONFIG_FILE=local uv run alembic upgrade head
@@ -129,10 +93,49 @@ INFO:     Application startup complete.
 ## Test
 
 ```shell
-$ # Rewrite `db` to `localhost` in app/config/test.env
 $ uv sync --frozen --group testing
 $ uv run ruff format
 $ uv run ruff check
 $ uv run mypy
 $ uv run pytest
+```
+
+## Cleanup
+
+```shell
+$ docker stop db
+$ docker rm db
+$ docker volume rm pgdata
+```
+
+# Run with docker compose
+
+After start-up, you can access [localhost:8000/docs](http://localhost:8000/docs) to see the api documentation.
+
+```shell
+# Rewrite `localhost` to `db` in app/config/test.env
+$ docker compose up
+```
+
+## Setup a database and create tables
+
+```shell
+$ docker compose exec app uv run alembic upgrade head
+```
+
+## Test
+
+
+```shell
+$ docker compose exec app uv sync --frozen --group testing
+$ docker compose exec app uv run ruff format
+$ docker compose exec app uv run ruff check
+$ docker compose exec app uv run mypy
+$ docker compose exec app uv run pytest
+```
+
+## Cleanup
+
+```shell
+$ docker compose down -v
 ```

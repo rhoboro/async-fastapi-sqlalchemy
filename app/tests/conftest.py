@@ -29,7 +29,7 @@ async def ac() -> AsyncGenerator:
 
 @pytest.fixture(scope="session")
 def setup_db() -> Generator:
-    engine = create_engine(f"{settings.DB_URI.replace('+asyncpg', '')}")
+    engine = create_engine(f"{settings.DB_URI.replace('+asyncpg', '+psycopg2')}")
     conn = engine.connect()
     # Terminate transaction
     conn.execute(text("commit"))
@@ -61,7 +61,8 @@ def setup_db() -> Generator:
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_db(setup_db: Generator) -> Generator:
-    engine = create_engine(f"{settings.DB_URI.replace('+asyncpg', '')}/test")
+    print("🍎", settings.DB_URI)
+    engine = create_engine(f"{settings.DB_URI.replace('+asyncpg', '+psycopg2')}/test")
 
     with engine.begin():
         Base.metadata.drop_all(engine)
